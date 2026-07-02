@@ -1,4 +1,3 @@
--- 1. جدول المستخدمين
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -11,7 +10,6 @@ CREATE TABLE brands (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
 );
--- 3. جدول الهواتف (المنتجات)
 CREATE TABLE phones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     model VARCHAR(100) NOT NULL, -- اسم الموديل مثل: iPhone 15 Pro
@@ -19,14 +17,12 @@ CREATE TABLE phones (
     brand_id INT, -- ربط الهاتف بالبراند الخاص به
     FOREIGN KEY (brand_id) REFERENCES brands(id) ON DELETE SET NULL
 );
--- 4. جدول الطلبات
 CREATE TABLE orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
--- 5. جدول تفاصيل الطلب
 CREATE TABLE order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
