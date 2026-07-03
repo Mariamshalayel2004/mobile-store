@@ -1,10 +1,7 @@
 <?php
-// index.php
 
-// 1. بدء الجلسة
 session_start();
 
-// 2. الاتصال بقاعدة البيانات
 $servername = "localhost";
 $username   = "root";
 $password   = "";
@@ -17,7 +14,6 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8mb4");
 
-// 3. كود الجداول
 $conn->query("INSERT IGNORE INTO brands (id, name) VALUES (1, 'Apple'), (2, 'Samsung'), (3, 'Xiaomi')");
 
 $check_count = $conn->query("SELECT COUNT(*) AS total FROM phones");
@@ -38,10 +34,8 @@ if ($total_phones < 8) {
         ('Samsung Galaxy S21', 350.00, 2)");
 }
 
-// 4. جلب البراندات للقائمة
 $brands_result = $conn->query("SELECT * FROM brands");
 
-// 5. التحكم في العرض (تصفية حسب البراند أو العرض الكامل أو الافتراضي)
 if (isset($_GET['brand_id'])) {
     $brand_id = (int)$_GET['brand_id'];
     $sql = "SELECT phones.*, brands.name AS brand_name 
@@ -105,7 +99,6 @@ $result = $conn->query($sql);
     <div class="sidebar-content">
         <a href="index.php?show=all" class="sidebar-link">📱 جميع الأجهزة</a>
         
-        <!-- قسم البراندات -->
         <div style="margin-top: 20px; font-weight: bold; padding: 10px;">البراندات:</div>
         <div class="brand-list">
             <?php while($brand = $brands_result->fetch_assoc()): ?>
@@ -121,7 +114,9 @@ $result = $conn->query($sql);
         <h1>📱 Mobile Store</h1>
     </div>
     <div class="nav-links">
+        <a href="admin/login.php">لوحة التحكم</a>
         <a href="index.php">الرئيسية</a>
+        
         <?php if (isset($_SESSION['user_name'])): ?>
             <a href="logout.php">تسجيل الخروج</a>
         <?php else: ?>
