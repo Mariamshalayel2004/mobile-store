@@ -1,6 +1,10 @@
 <?php
+// index.php
+
+// 1. بدء الجلسة
 session_start();
 
+// 2. الاتصال بقاعدة البيانات
 $servername = "localhost";
 $username   = "root";
 $password   = "";
@@ -13,6 +17,7 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8mb4");
 
+// 3. كود الجداول
 $conn->query("INSERT IGNORE INTO brands (id, name) VALUES (1, 'Apple'), (2, 'Samsung'), (3, 'Xiaomi')");
 
 $check_count = $conn->query("SELECT COUNT(*) AS total FROM phones");
@@ -33,8 +38,10 @@ if ($total_phones < 8) {
         ('Samsung Galaxy S21', 350.00, 2)");
 }
 
+// 4. جلب البراندات للقائمة
 $brands_result = $conn->query("SELECT * FROM brands");
 
+// 5. التحكم في العرض (تصفية حسب البراند أو العرض الكامل أو الافتراضي)
 if (isset($_GET['brand_id'])) {
     $brand_id = (int)$_GET['brand_id'];
     $sql = "SELECT phones.*, brands.name AS brand_name 
@@ -128,7 +135,6 @@ $result = $conn->query($sql);
         <?php 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                // (الكود الخاص بالصور كما هو لم يتم تغييره)
                 $model_lower = strtolower($row['model']);
                 if (strpos($model_lower, 'apple watch') !== false) $img_src = 'images/watch.png';
                 elseif (strpos($model_lower, 'iphone11') !== false) $img_src = 'images/iphone11.jpg';
@@ -138,6 +144,7 @@ $result = $conn->query($sql);
                 elseif (strpos($model_lower, 'samsung') !== false) $img_src = 'images/samsung.jpg';
                 elseif (strpos($model_lower, 'xiaomi') !== false) $img_src = 'images/xiaomi.jpg';
                 elseif (strpos($model_lower, 'pixel') !== false) $img_src = 'images/pixel.jpg';
+                elseif (strpos($model_lower, 'huawei') !== false) $img_src = 'images/Huawei Nova 14 Pro.jpg';
                 else $img_src = 'images/default.jpg'; 
                 
                 echo '<div class="product-card">';
