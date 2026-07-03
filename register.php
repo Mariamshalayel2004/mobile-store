@@ -1,16 +1,12 @@
 <?php
-// register.php
 
-// 1. بدء الجلسة
 session_start();
 
-// إذا كان مسجل دخوله بالفعل يتم توجيهه للرئيسية
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit();
 }
 
-// 2. الاتصال بقاعدة البيانات
 $servername = "localhost";
 $username   = "root";
 $password   = "";
@@ -26,20 +22,17 @@ $conn->set_charset("utf8mb4");
 $success_msg = "";
 $error_msg   = "";
 
-// 3. المعالجة البرمجية عند إرسال الفورم (POST)
 if (isset($_POST['submit_register'])) {
     $name     = trim($_POST['name']);
     $phone    = trim($_POST['phone']);
     $email    = trim($_POST['email']);
     $pass     = $_POST['password'];
-    $role     = 0; // القيمة 0 تعني زبون عادي دائماً للتسجيل المفتوح
+    $role     = 0; 
 
     if (!empty($name) && !empty($phone) && !empty($email) && !empty($pass)) {
         
-        // تشفير كلمة المرور لحماية بيانات الزبون
         $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
 
-        // استعلام الإدخال لحماية قاعدة البيانات
         $sql = "INSERT INTO users (name, phone, email, password, role) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssssi", $name, $phone, $email, $hashed_password, $role);
@@ -152,7 +145,6 @@ if (isset($_POST['submit_register'])) {
     <form action="register.php" method="POST">
         <div class="form-control">
             <label for="name">الاسم الكامل:</label>
-            <!-- تم تعديل الـ placeholder هنا إلى "أدخل اسمك" -->
             <input type="text" id="name" name="name" placeholder="أدخل اسمك" required>
         </div>
 
