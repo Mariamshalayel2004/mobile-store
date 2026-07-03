@@ -4,7 +4,7 @@ CREATE TABLE users (
     phone VARCHAR(20)NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role TINYINT DEFAULT 0 -- 0 للمستخدم، 1 للمدير
+    role TINYINT DEFAULT 0 
 );
 CREATE TABLE brands (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -12,9 +12,9 @@ CREATE TABLE brands (
 );
 CREATE TABLE phones (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    model VARCHAR(100) NOT NULL, -- اسم الموديل مثل: iPhone 15 Pro
+    model VARCHAR(100) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    brand_id INT, -- ربط الهاتف بالبراند الخاص به
+    brand_id INT,
     FOREIGN KEY (brand_id) REFERENCES brands(id) ON DELETE SET NULL
 );
 CREATE TABLE orders (
@@ -23,6 +23,7 @@ CREATE TABLE orders (
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
 CREATE TABLE order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
