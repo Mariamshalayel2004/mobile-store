@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 $servername = "localhost";
@@ -71,14 +70,16 @@ $result = $conn->query($sql);
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
         .sidebar-link { display: block; color: #333; text-decoration: none; padding: 12px 15px; font-size: 16px; font-weight: 600; border-bottom: 1px solid #f5f5f5; }
         .sidebar-link:hover { background-color: #f8f9fa; color: #007bff; }
-        .brand-list { padding-right: 20px; }
+        
+        .brand-list { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .brand-list.show { max-height: 500px; }
+        .brand-toggle-btn { cursor: pointer; font-weight: bold; padding: 12px 15px; color: #333; border-bottom: 1px solid #f5f5f5; }
         
         .menu-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.4); z-index: 999; display: none; }
         .sidebar-menu.open { right: 0; }
         .menu-overlay.open { display: block; }
         
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .welcome-box { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 30px; text-align: center; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
         .product-card { background: #fff; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .product-img { width: 100%; height: 180px; object-fit: contain; }
@@ -99,8 +100,8 @@ $result = $conn->query($sql);
     <div class="sidebar-content">
         <a href="index.php?show=all" class="sidebar-link">📱 جميع الأجهزة</a>
         
-        <div style="margin-top: 20px; font-weight: bold; padding: 10px;">البراندات:</div>
-        <div class="brand-list">
+        <div class="brand-toggle-btn" onclick="toggleBrands()">البراندات ▾</div>
+        <div class="brand-list" id="brandList">
             <?php while($brand = $brands_result->fetch_assoc()): ?>
                 <a href="index.php?brand_id=<?php echo $brand['id']; ?>" class="sidebar-link"><?php echo $brand['name']; ?></a>
             <?php endwhile; ?>
@@ -116,7 +117,6 @@ $result = $conn->query($sql);
     <div class="nav-links">
         <a href="admin/login.php">لوحة التحكم</a>
         <a href="index.php">الرئيسية</a>
-        
         <?php if (isset($_SESSION['user_name'])): ?>
             <a href="logout.php">تسجيل الخروج</a>
         <?php else: ?>
@@ -126,6 +126,8 @@ $result = $conn->query($sql);
 </header>
 
 <div class="container">
+    <h2 style="text-align: center; margin-bottom: 30px;">مرحبا بك في متجر mobile_store</h2>
+    
     <div class="products-grid">
         <?php 
         if ($result->num_rows > 0) {
@@ -151,7 +153,7 @@ $result = $conn->query($sql);
                 echo '</div>';
             }
         } else {
-            echo '<p>لا توجد أجهزة لهذا البراند حالياً.</p>';
+            echo '<p>لا توجد أجهزة حالياً.</p>';
         }
         ?>
     </div>
@@ -161,6 +163,9 @@ $result = $conn->query($sql);
 function toggleMenu() {
     document.getElementById('sidebarMenu').classList.toggle('open');
     document.getElementById('menuOverlay').classList.toggle('open');
+}
+function toggleBrands() {
+    document.getElementById('brandList').classList.toggle('show');
 }
 </script>
 </body>
