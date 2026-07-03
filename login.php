@@ -1,10 +1,7 @@
 <?php
-// login.php
 
-// 1. بدء الجلسة لتخزين بيانات المستخدم بعد نجاح تسجيل الدخول
 session_start();
 
-// إذا كان المستخدم مسجل دخوله بالفعل، يتم توجيهه مباشرة حسب صلاحيته
 if (isset($_SESSION['user_id'])) {
     if ($_SESSION['user_role'] == 1) {
         header("Location: admin/index.php");
@@ -14,7 +11,6 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
-// 2. الاتصال بقاعدة البيانات
 $servername = "localhost";
 $username   = "root";
 $password   = "";
@@ -29,37 +25,31 @@ $conn->set_charset("utf8mb4");
 
 $error_msg = "";
 
-// 3. معالجة البيانات القادمة من نموذج تسجيل الدخول عند الإرسال (POST)
 if (isset($_POST['submit_login'])) {
     $email = trim($_POST['email']);
     $pass  = $_POST['password'];
 
     if (!empty($email) && !empty($pass)) {
         
-        // تجهيز استعلام جلب الحساب بناءً على البريد الإلكتروني لحماية الكود من ثغرات الـ SQL Injection
         $sql = "SELECT id, name, password, role FROM users WHERE email = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        // فحص ما إذا كان البريد الإلكتروني مسجلاً في النظام
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
 
-            // فحص ومطابقة كلمة المرور المدخلة مع الكلمة المشفرة المخزنة بالداتابيز
             if (password_verify($pass, $user['password'])) {
                 
-                // تخزين البيانات الهامة في الجلسة (Session)
                 $_SESSION['user_id']   = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
-                $_SESSION['user_role'] = $user['role']; // 1 للإدمن، 0 للزبون
+                $_SESSION['user_role'] = $user['role']; 
 
-                // التوجيه الذكي للمستخدم حسب مستوى صلاحيته في النظام
                 if ($user['role'] == 1) {
-                    header("Location: admin/index.php"); // لوحة تحكم الإدمن
+                    header("Location: admin/index.php"); 
                 } else {
-                    header("Location: index.php"); // واجهة متجر الزبائن
+                    header("Location: index.php");
                 }
                 exit();
                 
@@ -82,7 +72,6 @@ if (isset($_POST['submit_login'])) {
     <meta charset="UTF-8">
     <title>متجر الهواتف | تسجيل الدخول</title>
     <style>
-        /* الحفاظ على نفس ستايل التصميم والألوان الظاهرة في صورتك تماماً */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background-color: #f7f9fa; 
@@ -128,7 +117,7 @@ if (isset($_POST['submit_login'])) {
             border: 1px solid #cccccc; 
             border-radius: 4px; 
             box-sizing: border-box; 
-            background-color: #e8f0fe; /* نفس درجة اللون الأزرق الفاتح في الحقول بصورتك */
+            background-color: #e8f0fe; 
         }
         .btn-block { 
             width: 100%; 
@@ -168,7 +157,6 @@ if (isset($_POST['submit_login'])) {
 <div class="container">
     <h2>تسجيل الدخول للمتجر</h2>
 
-    <!-- عرض رسالة الخطأ في حال تعذر تسجيل الدخول -->
     <?php if(!empty($error_msg)): ?>
         <div class="alert-danger"><?php echo $error_msg; ?></div>
     <?php endif; ?>
@@ -176,20 +164,16 @@ if (isset($_POST['submit_login'])) {
     <form action="login.php" method="POST">
         <div class="form-control">
             <label for="email">البريد الإلكتروني:</label>
-            <!-- تمت إضافة خاصية autocomplete="off" هنا -->
             <input type="email" id="email" name="email" placeholder="أدخل بريدك الإلكتروني" autocomplete="off" required>
         </div>
 
         <div class="form-control">
             <label for="password">كلمة المرور:</label>
-            <!-- تمت إضافة خاصية autocomplete="new-password" هنا -->
             <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" autocomplete="new-password" required>
         </div>
 
         <button type="submit" name="submit_login" class="btn-block">دخول</button>
         
-        <!-- إضافة روابط التنقل والإنشاء الجديدة أسفل الزر مباشرة -->
-        <!-- الروابط المحدثة لملف login.php -->
         <div class="links-container">
             <div class="register-text">
                 ليس لديك حساب؟ <a href="register.php">تسجيل جديد</a>
