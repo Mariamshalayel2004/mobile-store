@@ -1,14 +1,11 @@
 <?php
-// admin/update_password.php
 
-// 1. بدء الجلسة وفحص الصلاحية لحماية الصفحة
 session_start(); 
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
     header("Location: login.php");
     exit();
 }
 
-// 2. الاتصال بقاعدة البيانات
 $servername = "localhost";
 $username   = "root";
 $password   = "";
@@ -23,7 +20,6 @@ $conn->set_charset("utf8mb4");
 $success_msg = "";
 $error_msg   = "";
 
-// 3. التحقق من استقبال معرف المدير المطلوب تعديل باسورده عبر الرابط (GET)
 if (isset($_GET['id'])) {
     $admin_id = intval($_GET['id']);
 } else {
@@ -31,20 +27,16 @@ if (isset($_GET['id'])) {
     exit();
 }
 
-// 4. معالجة البيانات عند إرسال النموذج (POST)
 if (isset($_POST['submit_password'])) {
     $new_pass     = $_POST['new_password'];
     $confirm_pass = $_POST['confirm_password'];
 
     if (!empty($new_pass) && !empty($confirm_pass)) {
         
-        // التحقق من تطابق كلمتي المرور الجديدتين
         if ($new_pass === $confirm_pass) {
             
-            // تشفير كلمة المرور الجديدة لحماية أمن النظام
             $hashed_password = password_hash($new_pass, PASSWORD_DEFAULT);
             
-            // استعلام تحديث الباسورد للمدير المحدد
             $sql_update = "UPDATE users SET password = ? WHERE id = ? AND role = 1";
             $stmt_update = $conn->prepare($sql_update);
             $stmt_update->bind_param("si", $hashed_password, $admin_id);
@@ -73,7 +65,6 @@ if (isset($_POST['submit_password'])) {
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; display: flex; }
         
-        /* القائمة الجانبية الموحدة والثابتة */
         .sidebar { width: 250px; background-color: #343a40; color: white; min-height: 100vh; padding: 20px; box-sizing: border-box; }
         .sidebar h3 { text-align: center; color: #ffc107; margin-bottom: 30px; border-bottom: 1px solid #4b545c; padding-bottom: 15px; }
         .sidebar a { display: block; color: #c2c7d0; text-decoration: none; padding: 12px 10px; border-radius: 4px; margin-bottom: 5px; font-weight: 500; }
