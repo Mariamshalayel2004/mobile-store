@@ -1,5 +1,4 @@
 <?php
-// admin/add_admin.php
 
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
@@ -140,7 +139,6 @@ if (isset($_POST['submit_admin_register'])) {
 
         <button type="submit" name="submit_admin_register" class="btn-submit">إنشاء حساب الإدمن</button>
         
-        <!-- روابط التوجيه المحدثة في أسفل الكرت الأبيض -->
         <div class="links-container">
             <a href="manage_admin.php">← العودة لقائمة المدراء</a>
             <a href="login.php">العودة لشاشة تسجيل الدخول</a>
