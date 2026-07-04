@@ -1,7 +1,5 @@
 <?php
-// update_mobile.php
 
-// 1. الاتصال بقاعدة البيانات
 $servername = "localhost";
 $username   = "root";
 $password   = "";
@@ -17,7 +15,6 @@ $conn->set_charset("utf8mb4");
 $success_msg = "";
 $error_msg   = "";
 
-// 2. جلب بيانات الهاتف الحالي بناءً على الـ id الممرر عبر الرابط
 if (isset($_GET['id'])) {
     $phone_id = intval($_GET['id']);
     
@@ -38,10 +35,8 @@ if (isset($_GET['id'])) {
     exit();
 }
 
-// 3. جلب جميع الماركات التجارية لتعبئة القائمة المنسدلة (Select Dropdown)
 $brands_result = $conn->query("SELECT * FROM brands ORDER BY name ASC");
 
-// 4. معالجة تحديث البيانات عند إرسال الفورم (POST)
 if (isset($_POST['update_mobile'])) {
     $model    = trim($_POST['model']);
     $price    = trim($_POST['price']);
@@ -49,14 +44,12 @@ if (isset($_POST['update_mobile'])) {
 
     if (!empty($model) && !empty($price) && !empty($brand_id)) {
         
-        // استعلام التحديث لجدول الهواتف
         $sql_update = "UPDATE phones SET model = ?, price = ?, brand_id = ? WHERE id = ?";
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("sdii", $model, $price, $brand_id, $phone_id);
 
         if ($stmt_update->execute()) {
             $success_msg = "تم تحديث بيانات الهاتف بنجاح.";
-            // تحديث المتغير لعرض القيم المحدثة داخل الحقول فوراً
             $phone['model']    = $model;
             $phone['price']    = $price;
             $phone['brand_id'] = $brand_id;
