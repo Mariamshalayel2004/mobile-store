@@ -1,14 +1,11 @@
 <?php
-// admin/update_admin.php
 
-// 1. بدء الجلسة وفحص الصلاحية لحماية الصفحة
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
     header("Location: login.php");
     exit();
 }
 
-// 2. الاتصال المباشر بقاعدة البيانات
 $servername = "localhost";
 $username   = "root";
 $password   = "";
@@ -24,11 +21,9 @@ $conn->set_charset("utf8mb4");
 $success_msg = "";
 $error_msg   = "";
 
-// 3. جلب بيانات المدير الحالية لعرضها في النموذج قبل التعديل (GET)
 if (isset($_GET['id'])) {
     $admin_id = intval($_GET['id']);
     
-    // جلب البيانات بشرط أن يكون الحساب لإدمن (role = 1) لحماية النظام
     $sql_fetch = "SELECT * FROM users WHERE id = ? AND role = 1";
     $stmt_fetch = $conn->prepare($sql_fetch);
     $stmt_fetch->bind_param("i", $admin_id);
@@ -46,7 +41,6 @@ if (isset($_GET['id'])) {
     exit();
 }
 
-// 4. معالجة البيانات القادمة من الفورم عند الضغط على زر التحديث (POST)
 if (isset($_POST['update_admin'])) {
     $name  = trim($_POST['name']);
     $phone = trim($_POST['phone']);
@@ -54,14 +48,12 @@ if (isset($_POST['update_admin'])) {
 
     if (!empty($name) && !empty($phone) && !empty($email)) {
         
-        // تجهيز استعلام التحديث
         $sql_update = "UPDATE users SET name = ?, phone = ?, email = ? WHERE id = ? AND role = 1";
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("sssi", $name, $phone, $email, $admin_id);
 
         if ($stmt_update->execute()) {
             $success_msg = "تم تحديث بيانات المدير بنجاح.";
-            // تحديث المتغير لعرض البيانات الجديدة في الحقول فوراً
             $admin['name']  = $name;
             $admin['phone'] = $phone;
             $admin['email'] = $email;
@@ -87,7 +79,6 @@ if (isset($_POST['update_admin'])) {
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; display: flex; }
         
-        /* القائمة الجانبية الموحدة والثابتة */
         .sidebar { width: 250px; background-color: #343a40; color: white; min-height: 100vh; padding: 20px; box-sizing: border-box; }
         .sidebar h3 { text-align: center; color: #ffc107; margin-bottom: 30px; border-bottom: 1px solid #4b545c; padding-bottom: 15px; }
         .sidebar a { display: block; color: #c2c7d0; text-decoration: none; padding: 12px 10px; border-radius: 4px; margin-bottom: 5px; font-weight: 500; }
