@@ -1,5 +1,4 @@
 <?php
-// admin/manage_admin.php
 
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
@@ -18,7 +17,6 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8mb4");
 
-// جلب جميع المدراء (role = 1) من الداتابيز
 $sql = "SELECT id, name, phone, email FROM users WHERE role = 1 ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
@@ -31,7 +29,6 @@ $result = $conn->query($sql);
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; display: flex; }
         
-        /* شريط التنقل الجانبي الموحد */
         .sidebar { width: 250px; background-color: #343a40; color: white; min-height: 100vh; padding: 20px; box-sizing: border-box; }
         .sidebar h3 { text-align: center; color: #ffc107; margin-bottom: 30px; border-bottom: 1px solid #4b545c; padding-bottom: 15px; }
         .sidebar a { display: block; color: #c2c7d0; text-decoration: none; padding: 12px 10px; border-radius: 4px; margin-bottom: 5px; font-weight: 500; }
@@ -51,11 +48,9 @@ $result = $conn->query($sql);
         th { background-color: #f8f9fa; color: #333; font-weight: 600; }
         tr:hover { background-color: #f9f9f9; }
         
-        /* تنسيق الأزرار الإدارية الثلاثية والزر الأزرق الجديد */
         .btn-edit { background-color: #ffc107; color: #fff; padding: 5px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; margin-left: 5px; display: inline-block; }
         .btn-edit:hover { background-color: #e0a800; }
         
-        /* تحديث لون الزر إلى الأزرق وتغيير النص */
         .btn-password { background-color: #1e88e5; color: #fff; padding: 5px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold; margin-left: 5px; display: inline-block; }
         .btn-password:hover { background-color: #1565c0; }
         
@@ -103,7 +98,6 @@ $result = $conn->query($sql);
                         echo "<td>" . htmlspecialchars($row['name']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['phone']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-                        // تعديل نص الزر واللون الأزرق بنجاح هنا
                         echo "<td>
                                 <a href='update_password.php?id=" . $row['id'] . "' class='btn-password'>تغيير كلمة السر</a>
                                 <a href='update_admin.php?id=" . $row['id'] . "' class='btn-edit'>تعديل</a>
