@@ -1,5 +1,4 @@
 <?php
-// admin/manage_mobile.php
 
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
@@ -18,7 +17,6 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8mb4");
 
-// استعلام ربط الجداول المتقدم (LEFT JOIN) لجلب اسم الماركة بدلاً من معرّفها الرقمي
 $sql = "SELECT phones.*, brands.name AS brand_name 
         FROM phones 
         LEFT JOIN brands ON phones.brand_id = brands.id 
