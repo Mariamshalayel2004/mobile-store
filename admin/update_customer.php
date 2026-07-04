@@ -1,14 +1,11 @@
 <?php
-// admin/update_customer.php
 
-// 1. بدء الجلسة وفحص الصلاحية لحماية الصفحة
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
     header("Location: login.php");
     exit();
 }
 
-// 2. الاتصال المباشر بقاعدة البيانات
 $servername = "localhost";
 $username   = "root";
 $password   = "";
@@ -24,7 +21,6 @@ $conn->set_charset("utf8mb4");
 $success_msg = "";
 $error_msg   = "";
 
-// 3. جلب بيانات العميل الحالية لعرضها في النموذج قبل التعديل (GET)
 if (isset($_GET['id'])) {
     $customer_id = intval($_GET['id']);
     
@@ -45,7 +41,6 @@ if (isset($_GET['id'])) {
     exit();
 }
 
-// 4. معالجة البيانات القادمة من الفورم عند الضغط على زر التحديث (POST)
 if (isset($_POST['update_customer'])) {
     $name  = trim($_POST['name']);
     $phone = trim($_POST['phone']);
@@ -53,14 +48,12 @@ if (isset($_POST['update_customer'])) {
 
     if (!empty($name) && !empty($phone) && !empty($email)) {
         
-        // تجهيز استعلام التحديث (UPDATE)
         $sql_update = "UPDATE users SET name = ?, phone = ?, email = ? WHERE id = ? AND role = 0";
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("sssi", $name, $phone, $email, $customer_id);
 
         if ($stmt_update->execute()) {
             $success_msg = "تم تحديث بيانات العميل بنجاح.";
-            // إعادة جلب البيانات المحدثة لتبدو ظاهرة في الحقول فوراً
             $customer['name']  = $name;
             $customer['phone'] = $phone;
             $customer['email'] = $email;
@@ -86,7 +79,6 @@ if (isset($_POST['update_customer'])) {
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; display: flex; }
         
-        /* القائمة الجانبية الموحدة */
         .sidebar { width: 250px; background-color: #343a40; color: white; min-height: 100vh; padding: 20px; box-sizing: border-box; }
         .sidebar h3 { text-align: center; color: #ffc107; margin-bottom: 30px; border-bottom: 1px solid #4b545c; padding-bottom: 15px; }
         .sidebar a { display: block; color: #c2c7d0; text-decoration: none; padding: 12px 10px; border-radius: 4px; margin-bottom: 5px; font-weight: 500; }
