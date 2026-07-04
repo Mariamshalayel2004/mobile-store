@@ -1,5 +1,4 @@
 <?php
-// admin/delete_mobile.php
 
 session_start();
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
@@ -25,7 +24,6 @@ if (isset($_GET['id'])) {
     $stmt->bind_param("i", $phone_id);
 
     if ($stmt->execute()) {
-        // العودة لصفحة الإدارة بعد نجاح الحذف
         header("Location: manage_mobile.php");
         exit();
     } else {
