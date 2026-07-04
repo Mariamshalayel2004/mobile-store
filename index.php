@@ -115,14 +115,18 @@ $result = $conn->query($sql);
         <h1>📱 Mobile Store</h1>
     </div>
     <div class="nav-links">
-        <a href="admin/login.php">لوحة التحكم</a>
-        <a href="index.php">الرئيسية</a>
-        <?php if (isset($_SESSION['user_name'])): ?>
-            <a href="logout.php">تسجيل الخروج</a>
-        <?php else: ?>
-            <a href="login.php">تسجيل الدخول</a>
-        <?php endif; ?>
-    </div>
+    <a href="admin/login.php">لوحة التحكم</a>
+    <a href="index.php">الرئيسية</a>
+    <?php if (isset($_SESSION['user_name'])): ?>
+        <a href="my_orders.php">طلباتي</a>
+        <a href="logout.php">تسجيل الخروج</a>
+        <span style="color: #ffc107; font-weight: bold; margin-right: 15px;">
+            أهلاً، <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+        </span>
+    <?php else: ?>
+        <a href="login.php">تسجيل الدخول</a>
+    <?php endif; ?>
+</div>
 </header>
 
 <div class="container">
