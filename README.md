@@ -28,7 +28,8 @@
                                                                                                     git clone https://github.com/Mariamshalayel2004/mobile-store.git
 
 2_إعداد قاعدة البيانات:
-                                                                                                                                  phpMyAdmin إلى sql.database استورد ملف
+اسم قاعدة البيانات (mobile_store)
+                                                                                                                                   phpMyAdmin إلى sql.database استورد ملف
 
 3_تشغيل المشروع
  افتحindex.php مباشرة في المتصفح
